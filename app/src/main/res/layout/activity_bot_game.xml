@@ -9,7 +9,7 @@
         android:id="@+id/Joueur"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Votre tour"
+        android:text="À vous!"
         android:textSize="36sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

@@ -6,14 +6,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <!-- Texte Joueur à gauche -->
-
-    <!-- Résultat sous le texte Joueur -->
-
-    <!-- Timer à droite -->
-
-    <!-- Grille 4x4 au centre -->
-
     <TextView
         android:id="@+id/textView2"
         android:layout_width="178dp"
@@ -34,7 +26,7 @@
         android:id="@+id/Joueur"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="A vous!"
+        android:text="À vous!"
         android:textSize="32dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/gridLayout"
@@ -246,7 +238,6 @@
 
     </GridLayout>
 
-    <!-- Boutons Menu et Rejouer en bas -->
     <Button
         android:id="@+id/btnMenu"
         android:layout_width="wrap_content"

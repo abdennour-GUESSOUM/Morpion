@@ -19,16 +19,14 @@
         app:layout_constraintVertical_bias="0.216" />
 
     <Button
-        android:id="@+id/btnMode3x3"
+        android:id="@+id/btn3x3"
         android:layout_width="250dp"
         android:layout_height="wrap_content"
         android:text="Mode 3×3"
         android:textColor="@color/black"
-
         android:textSize="20sp"
         app:backgroundTint="@color/gray"
         app:cornerRadius="10dp"
-
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.79"
@@ -37,21 +35,34 @@
         app:layout_constraintVertical_bias="0.25" />
 
     <Button
-        android:id="@+id/btnMode5x5"
+        android:id="@+id/btn4x4"
         android:layout_width="250dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:text="Mode 5×5"
+        android:layout_marginTop="16dp"
+        android:text="Mode 4×4"
         android:textColor="@color/black"
-
         android:textSize="20sp"
         app:backgroundTint="@color/gray"
         app:cornerRadius="10dp"
-
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.79"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/btnMode4x4" />
+        app:layout_constraintTop_toBottomOf="@id/btn3x3" />
+
+    <Button
+        android:id="@+id/btn5x5"
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="Mode 5×5"
+        android:textColor="@color/black"
+        android:textSize="20sp"
+        app:backgroundTint="@color/gray"
+        app:cornerRadius="10dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.79"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/btn4x4" />
 
     <Button
         android:id="@+id/btnBot"
@@ -60,31 +71,12 @@
         android:layout_marginTop="16dp"
         android:text="Jouer contre un BOT"
         android:textColor="@color/black"
-
         android:textSize="20sp"
         app:backgroundTint="@color/gray"
         app:cornerRadius="10dp"
-
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.79"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/btnMode5x5" />
-
-    <Button
-        android:id="@+id/btnMode4x4"
-        android:layout_width="250dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="Mode 4×4"
-        android:textColor="@color/black"
-
-        android:textSize="20sp"
-        app:backgroundTint="@color/gray"
-        app:cornerRadius="10dp"
-
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.79"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/btnMode3x3" />
+        app:layout_constraintTop_toBottomOf="@id/btn5x5" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
 import java.util.ArrayList;
 
@@ -73,9 +74,11 @@ public class BotGameActivity extends AppCompatActivity {
         for (int i = 0; i < buttons.length && i < currentState.length; i++) {
             buttons[i].setText(currentState[i]);
             if (currentState[i].equals("X")) {
-                buttons[i].setTextColor(Color.RED);
+                buttons[i].setTextColor(ContextCompat.getColor(this, R.color.player_x));
+                buttons[i].setBackgroundColor(ContextCompat.getColor(this, R.color.player_x_light));
             } else if (currentState[i].equals("O")) {
-                buttons[i].setTextColor(Color.GREEN);
+                buttons[i].setTextColor(ContextCompat.getColor(this, R.color.player_o));
+                buttons[i].setBackgroundColor(ContextCompat.getColor(this, R.color.player_o_light));
             }
         }
 
@@ -132,19 +135,58 @@ public class BotGameActivity extends AppCompatActivity {
             });
         }
 
+        // ✨ Animation sur bouton Rejouer
         btnRejouer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                animateButton(v);
                 resetGame();
             }
         });
 
+        // ✨ Animation sur bouton Menu
         btnMenu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                finish();
+                animateButton(v);
+                v.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        finish();
+                    }
+                }, 200);
             }
         });
+    }
+
+    // 🎬 Animation de bouton
+    private void animateButton(View button) {
+        int originalColor = ContextCompat.getColor(this, R.color.button_default);
+        int pressedColor = ContextCompat.getColor(this, R.color.button_pressed);
+
+        button.setBackgroundColor(pressedColor);
+
+        button.animate()
+                .scaleX(0.95f)
+                .scaleY(0.95f)
+                .setDuration(100)
+                .withEndAction(new Runnable() {
+                    @Override
+                    public void run() {
+                        button.animate()
+                                .scaleX(1f)
+                                .scaleY(1f)
+                                .setDuration(100)
+                                .start();
+                        button.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                button.setBackgroundColor(originalColor);
+                            }
+                        }, 100);
+                    }
+                })
+                .start();
     }
 
     private void onCellClick(int index) {
@@ -161,15 +203,26 @@ public class BotGameActivity extends AppCompatActivity {
             countDownTimer.cancel();
         }
 
+        // 🎨 Nouvelles couleurs pour X
         buttons[index].setText("X");
-        buttons[index].setTextColor(Color.RED);
+        buttons[index].setTextColor(ContextCompat.getColor(this, R.color.player_x));
+        buttons[index].setBackgroundColor(ContextCompat.getColor(this, R.color.player_x_light));
+
+        // ✨ Animation de placement
+        buttons[index].setScaleX(0.5f);
+        buttons[index].setScaleY(0.5f);
+        buttons[index].animate()
+                .scaleX(1f)
+                .scaleY(1f)
+                .setDuration(200)
+                .start();
 
         compteurTours++;
 
         if (checkVictoire()) {
             jeuTermine = true;
             resultTextView.setText("Vous avez gagné !");
-            resultTextView.setTextColor(Color.RED);
+            resultTextView.setTextColor(ContextCompat.getColor(this, R.color.player_x));
             resultTextView.setVisibility(View.VISIBLE);
             return;
         }
@@ -198,19 +251,29 @@ public class BotGameActivity extends AppCompatActivity {
             return;
         }
 
-        // Get the best move using Minimax algorithm
         int bestMove = getBestMove();
 
         if (bestMove != -1) {
+            // 🎨 Nouvelles couleurs pour O
             buttons[bestMove].setText("O");
-            buttons[bestMove].setTextColor(Color.GREEN);
+            buttons[bestMove].setTextColor(ContextCompat.getColor(this, R.color.player_o));
+            buttons[bestMove].setBackgroundColor(ContextCompat.getColor(this, R.color.player_o_light));
+
+            // ✨ Animation de placement du bot
+            buttons[bestMove].setScaleX(0.5f);
+            buttons[bestMove].setScaleY(0.5f);
+            buttons[bestMove].animate()
+                    .scaleX(1f)
+                    .scaleY(1f)
+                    .setDuration(200)
+                    .start();
 
             compteurTours++;
 
             if (checkVictoire()) {
                 jeuTermine = true;
                 resultTextView.setText("BOT a gagné !");
-                resultTextView.setTextColor(Color.GREEN);
+                resultTextView.setTextColor(ContextCompat.getColor(this, R.color.player_o));
                 resultTextView.setVisibility(View.VISIBLE);
                 return;
             }
@@ -238,10 +301,8 @@ public class BotGameActivity extends AppCompatActivity {
 
         ArrayList<Integer> emptyCells = getEmptyCells(board);
 
-        // If it's the first move, choose a strategic position
         if (compteurTours == 1) {
-            // Prefer center or corners
-            int[] strategicMoves = {5, 6, 9, 10, 0, 3, 12, 15}; // Center cells first, then corners
+            int[] strategicMoves = {5, 6, 9, 10, 0, 3, 12, 15};
             for (int move : strategicMoves) {
                 if (board[move / 4][move % 4].isEmpty()) {
                     return move;
@@ -267,14 +328,13 @@ public class BotGameActivity extends AppCompatActivity {
     }
 
     private int minimax(String[][] board, int depth, boolean isMaximizing, int alpha, int beta) {
-        // Check terminal states
         String winner = checkWinner(board);
         if (winner.equals("O")) {
-            return 100 - depth; // Prefer faster wins
+            return 100 - depth;
         } else if (winner.equals("X")) {
-            return depth - 100; // Prefer slower losses
+            return depth - 100;
         } else if (isBoardFull(board) || depth >= MAX_DEPTH) {
-            return evaluateBoard(board); // Use heuristic evaluation
+            return evaluateBoard(board);
         }
 
         ArrayList<Integer> emptyCells = getEmptyCells(board);
@@ -293,7 +353,7 @@ public class BotGameActivity extends AppCompatActivity {
                 alpha = Math.max(alpha, score);
 
                 if (beta <= alpha) {
-                    break; // Beta cutoff
+                    break;
                 }
             }
             return maxScore;
@@ -311,29 +371,27 @@ public class BotGameActivity extends AppCompatActivity {
                 beta = Math.min(beta, score);
 
                 if (beta <= alpha) {
-                    break; // Alpha cutoff
+                    break;
                 }
             }
             return minScore;
         }
     }
 
-    // Heuristic evaluation function
     private int evaluateBoard(String[][] board) {
         int score = 0;
 
-        // Evaluate all possible winning lines
-        score += evaluateLine(board, 0, 0, 0, 1, 4); // Rows
+        score += evaluateLine(board, 0, 0, 0, 1, 4);
         score += evaluateLine(board, 1, 0, 0, 1, 4);
         score += evaluateLine(board, 2, 0, 0, 1, 4);
         score += evaluateLine(board, 3, 0, 0, 1, 4);
 
-        score += evaluateLine(board, 0, 0, 1, 0, 4); // Columns
+        score += evaluateLine(board, 0, 0, 1, 0, 4);
         score += evaluateLine(board, 0, 1, 1, 0, 4);
         score += evaluateLine(board, 0, 2, 1, 0, 4);
         score += evaluateLine(board, 0, 3, 1, 0, 4);
 
-        score += evaluateLine(board, 0, 0, 1, 1, 4); // Diagonals
+        score += evaluateLine(board, 0, 0, 1, 1, 4);
         score += evaluateLine(board, 0, 3, 1, -1, 4);
 
         return score;
@@ -354,12 +412,10 @@ public class BotGameActivity extends AppCompatActivity {
             }
         }
 
-        // If both players have pieces in this line, it's blocked
         if (botCount > 0 && playerCount > 0) {
             return 0;
         }
 
-        // Score based on number of pieces
         if (botCount == 3) return 50;
         if (botCount == 2) return 10;
         if (botCount == 1) return 1;
@@ -372,7 +428,6 @@ public class BotGameActivity extends AppCompatActivity {
     }
 
     private String checkWinner(String[][] board) {
-        // Check rows
         for (int i = 0; i < 4; i++) {
             if (!board[i][0].isEmpty() &&
                     board[i][0].equals(board[i][1]) &&
@@ -382,7 +437,6 @@ public class BotGameActivity extends AppCompatActivity {
             }
         }
 
-        // Check columns
         for (int i = 0; i < 4; i++) {
             if (!board[0][i].isEmpty() &&
                     board[0][i].equals(board[1][i]) &&
@@ -392,7 +446,6 @@ public class BotGameActivity extends AppCompatActivity {
             }
         }
 
-        // Check diagonals
         if (!board[0][0].isEmpty() &&
                 board[0][0].equals(board[1][1]) &&
                 board[1][1].equals(board[2][2]) &&
@@ -461,7 +514,7 @@ public class BotGameActivity extends AppCompatActivity {
                 if (!jeuTermine && joueurTurn) {
                     jeuTermine = true;
                     resultTextView.setText("Temps écoulé! le BOT à gagné!");
-                    resultTextView.setTextColor(Color.GREEN);
+                    resultTextView.setTextColor(ContextCompat.getColor(BotGameActivity.this, R.color.player_o));
                     resultTextView.setVisibility(View.VISIBLE);
                     timerTextView.setText("0");
                 }
@@ -491,7 +544,7 @@ public class BotGameActivity extends AppCompatActivity {
                 if (!jeuTermine && joueurTurn) {
                     jeuTermine = true;
                     resultTextView.setText("Temps écoulé ! BOT gagne !");
-                    resultTextView.setTextColor(Color.GREEN);
+                    resultTextView.setTextColor(ContextCompat.getColor(BotGameActivity.this, R.color.player_o));
                     resultTextView.setVisibility(View.VISIBLE);
                     timerTextView.setText("0");
                 }
@@ -549,6 +602,7 @@ public class BotGameActivity extends AppCompatActivity {
         for (Button button : buttons) {
             button.setText("");
             button.setTextColor(Color.BLACK);
+            button.setBackgroundColor(ContextCompat.getColor(this, R.color.cell_default));
         }
 
         joueurTurn = true;
@@ -612,15 +666,17 @@ public class BotGameActivity extends AppCompatActivity {
             String text = savedInstanceState.getString("button" + i, "");
             buttons[i].setText(text);
             if (text.equals("X")) {
-                buttons[i].setTextColor(Color.RED);
+                buttons[i].setTextColor(ContextCompat.getColor(this, R.color.player_x));
+                buttons[i].setBackgroundColor(ContextCompat.getColor(this, R.color.player_x_light));
             } else if (text.equals("O")) {
-                buttons[i].setTextColor(Color.GREEN);
+                buttons[i].setTextColor(ContextCompat.getColor(this, R.color.player_o));
+                buttons[i].setBackgroundColor(ContextCompat.getColor(this, R.color.player_o_light));
             } else {
                 buttons[i].setTextColor(Color.BLACK);
+                buttons[i].setBackgroundColor(ContextCompat.getColor(this, R.color.cell_default));
             }
         }
 
-        String joueurText = savedInstanceState.getString("joueurText", "Votre tour");
         if (joueurTurn) {
             joueurTextView.setText("Votre tour");
         } else {

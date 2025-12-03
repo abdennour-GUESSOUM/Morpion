@@ -10,6 +10,7 @@ import android.widget.GridLayout;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -47,45 +48,32 @@ public class MainActivity extends AppCompatActivity {
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
 
-        // Sauvegarder l'état actuel avant de changer le layout
         String[] currentState = new String[buttons.length];
         for (int i = 0; i < buttons.length; i++) {
             currentState[i] = buttons[i].getText().toString();
         }
 
-        // Sauvegarder le texte et la couleur du résultat
         String savedResultText = resultTextView.getText().toString();
         int savedResultVisibility = resultTextView.getVisibility();
         int savedResultColor = resultTextView.getCurrentTextColor();
 
-        // Recharger le layout (Android choisira automatiquement portrait ou landscape)
         setContentView(R.layout.activity_main);
-
-        // Réinitialiser les vues
         initViews();
-
-        // Recréer la grille
         createGrid();
 
-        // Restaurer l'état de la grille
         for (int i = 0; i < buttons.length && i < currentState.length; i++) {
             buttons[i].setText(currentState[i]);
             if (currentState[i].equals("X")) {
-                buttons[i].setTextColor(Color.RED);
+                buttons[i].setTextColor(ContextCompat.getColor(this, R.color.player_x));
             } else if (currentState[i].equals("O")) {
-                buttons[i].setTextColor(Color.GREEN);
+                buttons[i].setTextColor(ContextCompat.getColor(this, R.color.player_o));
             }
         }
 
-        // Restaurer l'affichage du joueur
         joueurTextView.setText(joueur1Turn ? "Joueur 1" : "Joueur 2");
-
-        // Restaurer le texte, la couleur et la visibilité du résultat
         resultTextView.setText(savedResultText);
         resultTextView.setTextColor(savedResultColor);
         resultTextView.setVisibility(savedResultVisibility);
-
-        // Réinitialiser les listeners
         initListeners();
     }
 
@@ -109,7 +97,6 @@ public class MainActivity extends AppCompatActivity {
 
         int buttonSize = calculateButtonSize();
 
-        // Convertir 4dp en pixels
         int marginInDp = 6;
         int marginInPixels = (int) (marginInDp * getResources().getDisplayMetrics().density);
 
@@ -119,10 +106,14 @@ public class MainActivity extends AppCompatActivity {
             button.setText("");
             button.setTextColor(Color.BLACK);
 
-            int textSize = Math.max(14, Math.min(24, buttonSize / 4));
+            // Taille de texte responsive
+            int textSize = Math.max(24, Math.min(48, buttonSize / 2));
             button.setTextSize(textSize);
+            button.setGravity(android.view.Gravity.CENTER);
+            button.setMaxLines(1);
 
-            button.setBackgroundColor(Color.LTGRAY);
+            // 🎨 Fond gris simple (comme bot_game)
+            button.setBackgroundColor(ContextCompat.getColor(this, R.color.gray));
 
             GridLayout.LayoutParams params = new GridLayout.LayoutParams();
             params.width = buttonSize;
@@ -150,24 +141,16 @@ public class MainActivity extends AppCompatActivity {
         int screenWidth = displayMetrics.widthPixels;
         int screenHeight = displayMetrics.heightPixels;
 
-        // Marges entre les boutons (4dp de chaque côté dans createGrid = 8dp total environ)
-        // On estime la marge totale requise pour toute la ligne
         int totalMarginPixels = 20 * gridSize;
-
         int availableSize;
 
-        // Si on est en Portrait (la plupart des cas sur téléphone)
         if (screenHeight > screenWidth) {
-            // On prend la largeur totale moins un peu de marge sur les bords de l'écran
-            availableSize = screenWidth - 100; // 100px de marge de sécurité totale
+            availableSize = screenWidth - 100;
         } else {
-            // En paysage, on se base sur la hauteur
             availableSize = (int) (screenHeight * 0.8);
         }
 
-        // Calcul de la taille d'un bouton sans limite arbitraire
         int buttonSize = (availableSize - totalMarginPixels) / gridSize;
-
         return buttonSize;
     }
 
@@ -175,6 +158,7 @@ public class MainActivity extends AppCompatActivity {
         btnRejouer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                animateButton(v);
                 resetGame();
             }
         });
@@ -182,9 +166,45 @@ public class MainActivity extends AppCompatActivity {
         btnMenu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                finish();
+                animateButton(v);
+                v.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        finish();
+                    }
+                }, 200);
             }
         });
+    }
+
+    // 🎬 Animation de bouton
+    private void animateButton(View button) {
+        int originalColor = ContextCompat.getColor(this, R.color.button_default);
+        int pressedColor = ContextCompat.getColor(this, R.color.button_pressed);
+
+        button.setBackgroundColor(pressedColor);
+
+        button.animate()
+                .scaleX(0.95f)
+                .scaleY(0.95f)
+                .setDuration(100)
+                .withEndAction(new Runnable() {
+                    @Override
+                    public void run() {
+                        button.animate()
+                                .scaleX(1f)
+                                .scaleY(1f)
+                                .setDuration(100)
+                                .start();
+                        button.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                button.setBackgroundColor(originalColor);
+                            }
+                        }, 100);
+                    }
+                })
+                .start();
     }
 
     private void onCellClick(int index) {
@@ -192,13 +212,23 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
 
+        // 🎨 X bleu, O orange - SANS changement de fond (reste gris)
         if (joueur1Turn) {
             buttons[index].setText("X");
-            buttons[index].setTextColor(Color.RED);
+            buttons[index].setTextColor(ContextCompat.getColor(this, R.color.player_x));
         } else {
             buttons[index].setText("O");
-            buttons[index].setTextColor(Color.GREEN);
+            buttons[index].setTextColor(ContextCompat.getColor(this, R.color.player_o));
         }
+
+        // ✨ Animation de placement (comme bot_game)
+        buttons[index].setScaleX(0.5f);
+        buttons[index].setScaleY(0.5f);
+        buttons[index].animate()
+                .scaleX(1f)
+                .scaleY(1f)
+                .setDuration(200)
+                .start();
 
         compteurTours++;
 
@@ -206,7 +236,9 @@ public class MainActivity extends AppCompatActivity {
             jeuTermine = true;
             String gagnant = joueur1Turn ? "Joueur 1" : "Joueur 2";
             resultTextView.setText(gagnant + " a gagné !");
-            resultTextView.setTextColor(joueur1Turn ? Color.RED : Color.GREEN);
+            resultTextView.setTextColor(joueur1Turn ?
+                    ContextCompat.getColor(this, R.color.player_x) :
+                    ContextCompat.getColor(this, R.color.player_o));
             resultTextView.setVisibility(View.VISIBLE);
             return;
         }
@@ -231,41 +263,28 @@ public class MainActivity extends AppCompatActivity {
         }
 
         for (int i = 0; i < gridSize; i++) {
-            if (checkLine(grille, i, 0, 0, 1)) {
-                return true;
-            }
+            if (checkLine(grille, i, 0, 0, 1)) return true;
         }
 
         for (int i = 0; i < gridSize; i++) {
-            if (checkLine(grille, 0, i, 1, 0)) {
-                return true;
-            }
+            if (checkLine(grille, 0, i, 1, 0)) return true;
         }
 
-        if (checkLine(grille, 0, 0, 1, 1)) {
-            return true;
-        }
-
-        if (checkLine(grille, 0, gridSize - 1, 1, -1)) {
-            return true;
-        }
+        if (checkLine(grille, 0, 0, 1, 1)) return true;
+        if (checkLine(grille, 0, gridSize - 1, 1, -1)) return true;
 
         return false;
     }
 
     private boolean checkLine(String[][] grille, int startRow, int startCol, int rowIncrement, int colIncrement) {
         String first = grille[startRow][startCol];
-        if (first.isEmpty()) {
-            return false;
-        }
+        if (first.isEmpty()) return false;
 
         int row = startRow;
         int col = startCol;
 
         for (int i = 0; i < gridSize; i++) {
-            if (!grille[row][col].equals(first)) {
-                return false;
-            }
+            if (!grille[row][col].equals(first)) return false;
             row += rowIncrement;
             col += colIncrement;
         }
@@ -277,6 +296,8 @@ public class MainActivity extends AppCompatActivity {
         for (Button button : buttons) {
             button.setText("");
             button.setTextColor(Color.BLACK);
+            // Remettre le fond gris
+            button.setBackgroundColor(ContextCompat.getColor(this, R.color.gray));
         }
 
         joueur1Turn = true;
@@ -316,9 +337,9 @@ public class MainActivity extends AppCompatActivity {
             String text = savedInstanceState.getString("button" + i);
             buttons[i].setText(text);
             if (text.equals("X")) {
-                buttons[i].setTextColor(Color.RED);
+                buttons[i].setTextColor(ContextCompat.getColor(this, R.color.player_x));
             } else if (text.equals("O")) {
-                buttons[i].setTextColor(Color.GREEN);
+                buttons[i].setTextColor(ContextCompat.getColor(this, R.color.player_o));
             }
         }
 

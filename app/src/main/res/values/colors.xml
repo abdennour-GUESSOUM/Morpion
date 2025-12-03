@@ -3,4 +3,17 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="gray">#D3D3D3</color>
+
+    <color name="background_light">#F5F5F5</color>
+    <color name="cell_default">#FFFFFF</color>
+    <color name="cell_border">#E0E0E0</color>
+
+    <color name="player_x">#2196F3</color>
+    <color name="player_x_light">#E3F2FD</color>
+
+    <color name="player_o">#FF9800</color>
+    <color name="player_o_light">#FFF3E0</color>
+
+    <color name="button_default">#9E9E9E</color>
+    <color name="button_pressed">#5C6BC0</color>
 </resources>
