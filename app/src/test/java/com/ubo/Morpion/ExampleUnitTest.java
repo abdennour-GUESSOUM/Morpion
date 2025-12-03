@@ -1,4 +1,4 @@
-package com.ubo.ocs_project_v2;
+package com.ubo.Morpion;
 
 import org.junit.Test;
 

@@ -6,38 +6,42 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <!-- Grille 4x4 -->
+    <!-- Texte Joueur à gauche -->
+
+    <!-- Résultat sous le texte Joueur -->
+
+    <!-- Timer à droite -->
+
+    <!-- Grille 4x4 au centre -->
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="178dp"
+        android:layout_height="66dp"
+        android:gravity="center"
+        android:maxLines="2"
+        android:text="Résultat"
+        android:textSize="24dp"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.542"
+        app:layout_constraintStart_toEndOf="@+id/gridLayout"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.498" />
 
     <TextView
         android:id="@+id/Joueur"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Votre tour"
-        android:textSize="28sp"
+        android:text="A vous!"
+        android:textSize="32dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.041"
+        app:layout_constraintEnd_toStartOf="@+id/gridLayout"
+        app:layout_constraintHorizontal_bias="0.495"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.386" />
-
-    <TextView
-        android:id="@+id/textView2"
-        android:layout_width="157dp"
-        android:layout_height="82dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
-        android:gravity="start"
-        android:maxLines="2"
-        android:text="Résultat"
-        android:textSize="20sp"
-        android:visibility="invisible"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.016"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.592" />
+        app:layout_constraintVertical_bias="0.498" />
 
     <TextView
         android:id="@+id/timerTextView"
@@ -48,9 +52,10 @@
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.888"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintHorizontal_bias="0.838"
+        app:layout_constraintStart_toEndOf="@+id/gridLayout"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.079" />
 
     <GridLayout
         android:id="@+id/gridLayout"
@@ -61,211 +66,211 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.45">
+        app:layout_constraintTop_toTopOf="parent">
 
         <Button
             android:id="@+id/button1"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            android:layout_margin="4dp"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:layout_margin="3dp"
             android:text=""
             android:textColor="@color/black"
+            android:textSize="20sp"
             app:backgroundTint="@color/gray"
-            app:cornerRadius="10dp"
-            android:textSize="24sp" />
+            app:cornerRadius="10dp" />
 
         <Button
             android:id="@+id/button2"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            android:layout_margin="4dp"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:layout_margin="3dp"
             android:text=""
             android:textColor="@color/black"
+            android:textSize="20sp"
             app:backgroundTint="@color/gray"
-            app:cornerRadius="10dp"
-            android:textSize="24sp" />
+            app:cornerRadius="10dp" />
 
         <Button
             android:id="@+id/button3"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            android:layout_margin="4dp"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:layout_margin="3dp"
             android:text=""
             android:textColor="@color/black"
+            android:textSize="20sp"
             app:backgroundTint="@color/gray"
-            app:cornerRadius="10dp"
-            android:textSize="24sp" />
+            app:cornerRadius="10dp" />
 
         <Button
             android:id="@+id/button4"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            android:layout_margin="4dp"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:layout_margin="3dp"
             android:text=""
             android:textColor="@color/black"
+            android:textSize="20sp"
             app:backgroundTint="@color/gray"
-            app:cornerRadius="10dp"
-            android:textSize="24sp" />
+            app:cornerRadius="10dp" />
 
         <Button
             android:id="@+id/button5"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            android:layout_margin="4dp"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:layout_margin="3dp"
             android:text=""
             android:textColor="@color/black"
+            android:textSize="20sp"
             app:backgroundTint="@color/gray"
-            app:cornerRadius="10dp"
-            android:textSize="24sp" />
+            app:cornerRadius="10dp" />
 
         <Button
             android:id="@+id/button6"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            android:layout_margin="4dp"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:layout_margin="3dp"
             android:text=""
             android:textColor="@color/black"
+            android:textSize="20sp"
             app:backgroundTint="@color/gray"
-            app:cornerRadius="10dp"
-            android:textSize="24sp" />
+            app:cornerRadius="10dp" />
 
         <Button
             android:id="@+id/button7"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            android:layout_margin="4dp"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:layout_margin="3dp"
             android:text=""
             android:textColor="@color/black"
+            android:textSize="20sp"
             app:backgroundTint="@color/gray"
-            app:cornerRadius="10dp"
-            android:textSize="24sp" />
+            app:cornerRadius="10dp" />
 
         <Button
             android:id="@+id/button8"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            android:layout_margin="4dp"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:layout_margin="3dp"
             android:text=""
             android:textColor="@color/black"
+            android:textSize="20sp"
             app:backgroundTint="@color/gray"
-            app:cornerRadius="10dp"
-            android:textSize="24sp" />
+            app:cornerRadius="10dp" />
 
         <Button
             android:id="@+id/button9"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            android:layout_margin="4dp"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:layout_margin="3dp"
             android:text=""
             android:textColor="@color/black"
+            android:textSize="20sp"
             app:backgroundTint="@color/gray"
-            app:cornerRadius="10dp"
-            android:textSize="24sp" />
+            app:cornerRadius="10dp" />
 
         <Button
             android:id="@+id/button10"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            android:layout_margin="4dp"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:layout_margin="3dp"
             android:text=""
             android:textColor="@color/black"
+            android:textSize="20sp"
             app:backgroundTint="@color/gray"
-            app:cornerRadius="10dp"
-            android:textSize="24sp" />
+            app:cornerRadius="10dp" />
 
         <Button
             android:id="@+id/button11"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            android:layout_margin="4dp"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:layout_margin="3dp"
             android:text=""
             android:textColor="@color/black"
+            android:textSize="20sp"
             app:backgroundTint="@color/gray"
-            app:cornerRadius="10dp"
-            android:textSize="24sp" />
+            app:cornerRadius="10dp" />
 
         <Button
             android:id="@+id/button12"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            android:layout_margin="4dp"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:layout_margin="3dp"
             android:text=""
             android:textColor="@color/black"
+            android:textSize="20sp"
             app:backgroundTint="@color/gray"
-            app:cornerRadius="10dp"
-            android:textSize="24sp" />
+            app:cornerRadius="10dp" />
 
         <Button
             android:id="@+id/button13"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            android:layout_margin="4dp"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:layout_margin="3dp"
             android:text=""
             android:textColor="@color/black"
+            android:textSize="20sp"
             app:backgroundTint="@color/gray"
-            app:cornerRadius="10dp"
-            android:textSize="24sp" />
+            app:cornerRadius="10dp" />
 
         <Button
             android:id="@+id/button14"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            android:layout_margin="4dp"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:layout_margin="3dp"
             android:text=""
             android:textColor="@color/black"
+            android:textSize="20sp"
             app:backgroundTint="@color/gray"
-            app:cornerRadius="10dp"
-            android:textSize="24sp" />
+            app:cornerRadius="10dp" />
 
         <Button
             android:id="@+id/button15"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            android:layout_margin="4dp"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:layout_margin="3dp"
             android:text=""
             android:textColor="@color/black"
+            android:textSize="20sp"
             app:backgroundTint="@color/gray"
-            app:cornerRadius="10dp"
-            android:textSize="24sp" />
+            app:cornerRadius="10dp" />
 
         <Button
             android:id="@+id/button16"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            android:layout_margin="4dp"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:layout_margin="3dp"
             android:text=""
             android:textColor="@color/black"
+            android:textSize="20sp"
             app:backgroundTint="@color/gray"
-            app:cornerRadius="10dp"
-            android:textSize="24sp" />
+            app:cornerRadius="10dp" />
 
     </GridLayout>
 
-    <Button
-        android:id="@+id/btnRejouer"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="16dp"
-        android:text="Rejouer"
-        android:textColor="@color/black"
-        app:backgroundTint="@color/gray"
-        app:cornerRadius="10dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
-
+    <!-- Boutons Menu et Rejouer en bas -->
     <Button
         android:id="@+id/btnMenu"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginBottom="16dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginBottom="8dp"
         android:text="Menu"
         android:textColor="@color/black"
         app:backgroundTint="@color/gray"
         app:cornerRadius="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/btnRejouer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:text="Rejouer"
+        android:textColor="@color/black"
+        app:backgroundTint="@color/gray"
+        app:cornerRadius="10dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

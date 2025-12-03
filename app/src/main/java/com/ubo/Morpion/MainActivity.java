@@ -1,4 +1,4 @@
-package com.ubo.ocs_project_v2;
+package com.ubo.Morpion;
 
 import android.content.res.Configuration;
 import android.graphics.Color;
@@ -33,19 +33,60 @@ public class MainActivity extends AppCompatActivity {
         gridSize = getIntent().getIntExtra("GRID_SIZE", 3);
 
         initViews();
-        createGrid();
-        initListeners();
 
         if (savedInstanceState != null) {
             restoreGameState(savedInstanceState);
+        } else {
+            createGrid();
         }
+
+        initListeners();
     }
 
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
+
+        // Sauvegarder l'état actuel avant de changer le layout
+        String[] currentState = new String[buttons.length];
+        for (int i = 0; i < buttons.length; i++) {
+            currentState[i] = buttons[i].getText().toString();
+        }
+
+        // Sauvegarder le texte et la couleur du résultat
+        String savedResultText = resultTextView.getText().toString();
+        int savedResultVisibility = resultTextView.getVisibility();
+        int savedResultColor = resultTextView.getCurrentTextColor();
+
+        // Recharger le layout (Android choisira automatiquement portrait ou landscape)
+        setContentView(R.layout.activity_main);
+
+        // Réinitialiser les vues
+        initViews();
+
+        // Recréer la grille
         createGrid();
-        restoreCurrentState();
+
+        // Restaurer l'état de la grille
+        for (int i = 0; i < buttons.length && i < currentState.length; i++) {
+            buttons[i].setText(currentState[i]);
+            if (currentState[i].equals("X")) {
+                buttons[i].setTextColor(Color.RED);
+            } else if (currentState[i].equals("O")) {
+                buttons[i].setTextColor(Color.GREEN);
+            }
+        }
+
+        // Restaurer l'affichage du joueur
+        joueurTextView.setText(joueur1Turn ? "Joueur 1" : "Joueur 2");
+
+        // Restaurer le texte, la couleur et la visibilité du résultat
+        resultTextView.setText(savedResultText);
+        resultTextView.setTextColor(savedResultColor);
+        resultTextView.setVisibility(savedResultVisibility);
+
+        // Réinitialiser les listeners
+        initListeners();
     }
 
     private void initViews() {
@@ -64,23 +105,29 @@ public class MainActivity extends AppCompatActivity {
         gridLayout.setRowCount(gridSize);
 
         int totalCells = gridSize * gridSize;
-        Button[] oldButtons = buttons;
         buttons = new Button[totalCells];
 
         int buttonSize = calculateButtonSize();
+
+        // Convertir 4dp en pixels
+        int marginInDp = 6;
+        int marginInPixels = (int) (marginInDp * getResources().getDisplayMetrics().density);
 
         for (int i = 0; i < totalCells; i++) {
             Button button = new Button(this);
             button.setId(View.generateViewId());
             button.setText("");
             button.setTextColor(Color.BLACK);
-            button.setTextSize(20);
+
+            int textSize = Math.max(14, Math.min(24, buttonSize / 4));
+            button.setTextSize(textSize);
+
             button.setBackgroundColor(Color.LTGRAY);
 
             GridLayout.LayoutParams params = new GridLayout.LayoutParams();
             params.width = buttonSize;
             params.height = buttonSize;
-            params.setMargins(4, 4, 4, 4);
+            params.setMargins(marginInPixels, marginInPixels, marginInPixels, marginInPixels);
             button.setLayoutParams(params);
 
             final int index = i;
@@ -91,15 +138,6 @@ public class MainActivity extends AppCompatActivity {
                 }
             });
 
-            if (oldButtons != null && i < oldButtons.length) {
-                button.setText(oldButtons[i].getText());
-                if (oldButtons[i].getText().equals("X")) {
-                    button.setTextColor(Color.RED);
-                } else if (oldButtons[i].getText().equals("O")) {
-                    button.setTextColor(Color.GREEN);
-                }
-            }
-
             buttons[i] = button;
             gridLayout.addView(button);
         }
@@ -109,37 +147,28 @@ public class MainActivity extends AppCompatActivity {
         DisplayMetrics displayMetrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
 
-        int orientation = getResources().getConfiguration().orientation;
         int screenWidth = displayMetrics.widthPixels;
         int screenHeight = displayMetrics.heightPixels;
 
-        int availableSpace;
-        if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
-            availableSpace = (int) (screenHeight * 0.7);
+        // Marges entre les boutons (4dp de chaque côté dans createGrid = 8dp total environ)
+        // On estime la marge totale requise pour toute la ligne
+        int totalMarginPixels = 20 * gridSize;
+
+        int availableSize;
+
+        // Si on est en Portrait (la plupart des cas sur téléphone)
+        if (screenHeight > screenWidth) {
+            // On prend la largeur totale moins un peu de marge sur les bords de l'écran
+            availableSize = screenWidth - 100; // 100px de marge de sécurité totale
         } else {
-            availableSpace = (int) (screenWidth * 0.9);
+            // En paysage, on se base sur la hauteur
+            availableSize = (int) (screenHeight * 0.8);
         }
 
-        int margin = 8;
-        int buttonSize = (availableSpace - (gridSize + 1) * margin) / gridSize;
-
-        int maxSize = 120*3;
-        int minSize = 50;
-
-        if (buttonSize > maxSize) {
-            buttonSize = maxSize;
-        } else if (buttonSize < minSize) {
-            buttonSize = minSize;
-        }
+        // Calcul de la taille d'un bouton sans limite arbitraire
+        int buttonSize = (availableSize - totalMarginPixels) / gridSize;
 
         return buttonSize;
-    }
-
-    private void restoreCurrentState() {
-        joueurTextView.setText(joueur1Turn ? "Joueur 1" : "Joueur 2");
-        if (jeuTermine && resultTextView != null) {
-            resultTextView.setVisibility(View.VISIBLE);
-        }
     }
 
     private void initListeners() {
@@ -177,6 +206,7 @@ public class MainActivity extends AppCompatActivity {
             jeuTermine = true;
             String gagnant = joueur1Turn ? "Joueur 1" : "Joueur 2";
             resultTextView.setText(gagnant + " a gagné !");
+            resultTextView.setTextColor(joueur1Turn ? Color.RED : Color.GREEN);
             resultTextView.setVisibility(View.VISIBLE);
             return;
         }
@@ -184,6 +214,7 @@ public class MainActivity extends AppCompatActivity {
         if (compteurTours == gridSize * gridSize) {
             jeuTermine = true;
             resultTextView.setText("Match nul !");
+            resultTextView.setTextColor(Color.BLACK);
             resultTextView.setVisibility(View.VISIBLE);
             return;
         }
@@ -271,12 +302,15 @@ public class MainActivity extends AppCompatActivity {
 
         outState.putString("resultText", resultTextView.getText().toString());
         outState.putInt("resultVisibility", resultTextView.getVisibility());
+        outState.putInt("resultColor", resultTextView.getCurrentTextColor());
     }
 
     private void restoreGameState(Bundle savedInstanceState) {
         joueur1Turn = savedInstanceState.getBoolean("joueur1Turn");
         compteurTours = savedInstanceState.getInt("compteurTours");
         jeuTermine = savedInstanceState.getBoolean("jeuTermine");
+
+        createGrid();
 
         for (int i = 0; i < buttons.length; i++) {
             String text = savedInstanceState.getString("button" + i);
@@ -290,6 +324,7 @@ public class MainActivity extends AppCompatActivity {
 
         joueurTextView.setText(joueur1Turn ? "Joueur 1" : "Joueur 2");
         resultTextView.setText(savedInstanceState.getString("resultText"));
+        resultTextView.setTextColor(savedInstanceState.getInt("resultColor", Color.BLACK));
         resultTextView.setVisibility(savedInstanceState.getInt("resultVisibility"));
     }
 }

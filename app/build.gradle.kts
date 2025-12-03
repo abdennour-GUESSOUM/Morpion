@@ -3,11 +3,11 @@ plugins {
 }
 
 android {
-    namespace = "com.ubo.ocs_project_v2"
+    namespace = "com.ubo.Morpion"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.ubo.ocs_project_v2"
+        applicationId = "com.ubo.Morpion"
         minSdk = 24
         targetSdk = 34
         versionCode = 1
