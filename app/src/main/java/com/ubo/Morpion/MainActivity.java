@@ -106,13 +106,11 @@ public class MainActivity extends AppCompatActivity {
             button.setText("");
             button.setTextColor(Color.BLACK);
 
-            // Taille de texte responsive
-            int textSize = Math.max(24, Math.min(48, buttonSize / 2));
+            int textSize = Math.max(18, Math.min(48, buttonSize / 3));
             button.setTextSize(textSize);
             button.setGravity(android.view.Gravity.CENTER);
             button.setMaxLines(1);
 
-            // 🎨 Fond gris simple (comme bot_game)
             button.setBackgroundColor(ContextCompat.getColor(this, R.color.gray));
 
             GridLayout.LayoutParams params = new GridLayout.LayoutParams();
@@ -177,7 +175,6 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    // 🎬 Animation de bouton
     private void animateButton(View button) {
         int originalColor = ContextCompat.getColor(this, R.color.button_default);
         int pressedColor = ContextCompat.getColor(this, R.color.button_pressed);
@@ -212,7 +209,6 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
 
-        // 🎨 X bleu, O orange - SANS changement de fond (reste gris)
         if (joueur1Turn) {
             buttons[index].setText("X");
             buttons[index].setTextColor(ContextCompat.getColor(this, R.color.player_x));
@@ -221,7 +217,6 @@ public class MainActivity extends AppCompatActivity {
             buttons[index].setTextColor(ContextCompat.getColor(this, R.color.player_o));
         }
 
-        // ✨ Animation de placement (comme bot_game)
         buttons[index].setScaleX(0.5f);
         buttons[index].setScaleY(0.5f);
         buttons[index].animate()
@@ -296,7 +291,6 @@ public class MainActivity extends AppCompatActivity {
         for (Button button : buttons) {
             button.setText("");
             button.setTextColor(Color.BLACK);
-            // Remettre le fond gris
             button.setBackgroundColor(ContextCompat.getColor(this, R.color.gray));
         }
 

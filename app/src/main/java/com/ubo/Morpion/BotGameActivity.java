@@ -135,7 +135,6 @@ public class BotGameActivity extends AppCompatActivity {
             });
         }
 
-        // ✨ Animation sur bouton Rejouer
         btnRejouer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -144,7 +143,6 @@ public class BotGameActivity extends AppCompatActivity {
             }
         });
 
-        // ✨ Animation sur bouton Menu
         btnMenu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -159,7 +157,6 @@ public class BotGameActivity extends AppCompatActivity {
         });
     }
 
-    // 🎬 Animation de bouton
     private void animateButton(View button) {
         int originalColor = ContextCompat.getColor(this, R.color.button_default);
         int pressedColor = ContextCompat.getColor(this, R.color.button_pressed);
@@ -203,12 +200,10 @@ public class BotGameActivity extends AppCompatActivity {
             countDownTimer.cancel();
         }
 
-        // 🎨 Nouvelles couleurs pour X
         buttons[index].setText("X");
         buttons[index].setTextColor(ContextCompat.getColor(this, R.color.player_x));
         buttons[index].setBackgroundColor(ContextCompat.getColor(this, R.color.player_x_light));
 
-        // ✨ Animation de placement
         buttons[index].setScaleX(0.5f);
         buttons[index].setScaleY(0.5f);
         buttons[index].animate()
@@ -254,12 +249,10 @@ public class BotGameActivity extends AppCompatActivity {
         int bestMove = getBestMove();
 
         if (bestMove != -1) {
-            // 🎨 Nouvelles couleurs pour O
             buttons[bestMove].setText("O");
             buttons[bestMove].setTextColor(ContextCompat.getColor(this, R.color.player_o));
             buttons[bestMove].setBackgroundColor(ContextCompat.getColor(this, R.color.player_o_light));
 
-            // ✨ Animation de placement du bot
             buttons[bestMove].setScaleX(0.5f);
             buttons[bestMove].setScaleY(0.5f);
             buttons[bestMove].animate()
@@ -293,7 +286,6 @@ public class BotGameActivity extends AppCompatActivity {
         startTimer();
     }
 
-    // Minimax Algorithm with Alpha-Beta Pruning
     private int getBestMove() {
         String[][] board = getBoardState();
         int bestScore = Integer.MIN_VALUE;

@@ -79,7 +79,6 @@ public class MenuActivity extends AppCompatActivity {
         });
     }
 
-    // 🎬 Animation de bouton
     private void animateButton(View button) {
         int originalColor = ContextCompat.getColor(this, R.color.button_default);
         int pressedColor = ContextCompat.getColor(this, R.color.button_pressed);
